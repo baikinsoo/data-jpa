@@ -3,6 +3,7 @@ package study.datajpa.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,16 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public Page<MemberDto> list(Pageable pageable) {
-        Page<Member> page = memberRepository.findAll(pageable);
-        Page<MemberDto> map = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
-        return map;
+    public Page<MemberDto> list(@PageableDefault(size=5) Pageable pageable) {
+//        Page<Member> page = memberRepository.findAll(pageable);
+//        Page<MemberDto> map = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+//        return map;
+
+//        return memberRepository.findAll(pageable)
+//                .map(member -> new MemberDto(member));
+
+        return memberRepository.findAll(pageable)
+                .map(MemberDto::new);
     }
 
 //    @PostConstruct
